@@ -27,13 +27,11 @@ const WorkoutsProvider = ({ children }: { children: ReactNode }) => {
   const [saved, setSaved] = useState<IWorkout[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // load persisted plan/saved data once on mount
   useEffect(() => {
     try {
       const storedPlan = localStorage.getItem(PLAN_STORAGE_KEY);
       const storedSaved = localStorage.getItem(SAVED_STORAGE_KEY);
 
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time hydration from localStorage; must run client-side only to avoid an SSR hydration mismatch
       if (storedPlan) setPlan(JSON.parse(storedPlan));
       if (storedSaved) setSaved(JSON.parse(storedSaved));
     } catch (error) {
@@ -43,7 +41,6 @@ const WorkoutsProvider = ({ children }: { children: ReactNode }) => {
     setIsLoaded(true);
   }, []);
 
-  // persist plan/saved data whenever they change
   useEffect(() => {
     if (!isLoaded) return;
 
